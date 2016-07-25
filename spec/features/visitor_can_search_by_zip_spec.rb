@@ -7,7 +7,9 @@ RSpec.feature 'A vistor can search for a given zip code' do
       fill_in 'zip', with: '80203'
       click_on 'Locate'
 
-      expect(current_path).to eq '/search?zip=80203'
+      current_path_with_params = current_url.split('/')[-1]
+
+      expect(current_path_with_params).to eq 'search?zip=80203'
       expect(page.all('.station').count).to be <= 10
       expect(page).to_not have_content("Name")
       expect(page).to_not have_content("Address")
