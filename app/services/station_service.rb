@@ -7,13 +7,19 @@ class StationService
       f.response :logger
       f.adapter  Faraday.default_adapter
       f.params['api_key'] = ENV['nrel']
-end
+    end
+  end
+
+  def parse(body)
+    JSON.parse(body)
   end
 
   def find_stations(search_hash)
-    @conn.get do |req|
+    response = @conn.get do |req|
       req.url '/api/alt-fuel-stations/v1'
       req.params['zip'] = search_hash[:zip]
     end
+
+    parse(response.body)
   end
 end
